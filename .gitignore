@@ -1,0 +1,17 @@
+# Dataset
+data/
+
+# Generated data/model files
+data.pickle
+model.p
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Temporary/testing files
+temp.py
+test_classifier.py
+
+# VS Code
+.vscode/
