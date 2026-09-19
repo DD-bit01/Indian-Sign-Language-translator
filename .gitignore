@@ -1,17 +1,19 @@
 # Dataset
 data/
+webcam_data/
+webcam_data_normalized/
 
 # Generated data/model files
-data.pickle
-model.p
+*.pickle
+*.p
 
-# Python cache
+# Python
 __pycache__/
 *.pyc
 
-# Temporary/testing files
-temp.py
-test_classifier.py
-
-# VS Code
+# IDE
 .vscode/
+
+# Temporary files
+temp.py
+webcam_5.jpg

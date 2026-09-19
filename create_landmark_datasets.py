@@ -17,12 +17,14 @@ data = []
 labels = []
 
 for dir_ in os.listdir(DATA_DIR):
+
     class_path = os.path.join(DATA_DIR, dir_)
 
     if not os.path.isdir(class_path):
         continue
 
     for img_path in os.listdir(class_path):
+
         img_full_path = os.path.join(class_path, img_path)
 
         img = cv2.imread(img_full_path)
@@ -31,49 +33,113 @@ for dir_ in os.listdir(DATA_DIR):
             print("Could not read:", img_full_path)
             continue
 
-        img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        img_rgb = cv2.cvtColor(
+            img,
+            cv2.COLOR_BGR2RGB
+        )
+
         results = hands.process(img_rgb)
 
         if not results.multi_hand_landmarks:
             continue
 
-        detected_hands = results.multi_hand_landmarks
+        # --------------------------------
+        # Sort hands left → right
+        # --------------------------------
 
-        # Sort hands from left to right using wrist x-coordinate
         detected_hands = sorted(
-            detected_hands,
+            results.multi_hand_landmarks,
             key=lambda hand: hand.landmark[0].x
         )
 
         sample_features = []
 
+        # --------------------------------
+        # Process each hand separately
+        # --------------------------------
+
         for hand_landmarks in detected_hands[:2]:
 
-            x_coords = [landmark.x for landmark in hand_landmarks.landmark]
-            y_coords = [landmark.y for landmark in hand_landmarks.landmark]
+            x_coords = [
+                landmark.x
+                for landmark in hand_landmarks.landmark
+            ]
+
+            y_coords = [
+                landmark.y
+                for landmark in hand_landmarks.landmark
+            ]
 
             min_x = min(x_coords)
+            max_x = max(x_coords)
+
             min_y = min(y_coords)
+            max_y = max(y_coords)
+
+            # Hand bounding-box dimensions
+            hand_width = max_x - min_x
+            hand_height = max_y - min_y
+
+            # Safety against division by zero
+            if hand_width == 0:
+                hand_width = 1e-6
+
+            if hand_height == 0:
+                hand_height = 1e-6
+
+            # --------------------------------
+            # Scale-normalized landmarks
+            # --------------------------------
 
             for landmark in hand_landmarks.landmark:
-                sample_features.append(landmark.x - min_x)
-                sample_features.append(landmark.y - min_y)
 
-        # If only one hand is detected, add zero features for second hand
+                normalized_x = (
+                    landmark.x - min_x
+                ) / hand_width
+
+                normalized_y = (
+                    landmark.y - min_y
+                ) / hand_height
+
+                sample_features.append(
+                    normalized_x
+                )
+
+                sample_features.append(
+                    normalized_y
+                )
+
+        # --------------------------------
+        # Pad second hand if missing
+        # --------------------------------
+
         while len(sample_features) < 84:
             sample_features.append(0.0)
 
+        # --------------------------------
         # Safety check
+        # --------------------------------
+
         if len(sample_features) == 84:
+
             data.append(sample_features)
             labels.append(dir_)
 
+
 print("Total valid samples:", len(data))
 
-with open('data.pickle', 'wb') as f:
-    pickle.dump({
-        'data': data,
-        'labels': labels
-    }, f)
+# --------------------------------
+# Save dataset
+# --------------------------------
 
-print("Dataset saved successfully as data.pickle")
+with open('data_normalized.pickle', 'wb') as f:
+
+    pickle.dump(
+        {
+            'data': data,
+            'labels': labels
+        },
+        f
+    )
+
+print("Normalized dataset saved successfully as data_normalized.pickle")
