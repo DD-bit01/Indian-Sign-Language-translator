@@ -4,8 +4,7 @@ webcam_data/
 webcam_data_normalized/
 
 # Generated data/model files
-*.pickle
-*.p
+
 
 # Python
 __pycache__/

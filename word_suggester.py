@@ -19,6 +19,10 @@ class WordSuggester:
             "team",
             "project",
             "hackathon",
+            "we",
+            "registered",
+            "IQOO",
+            
 
             "thank",
             "thanks",
