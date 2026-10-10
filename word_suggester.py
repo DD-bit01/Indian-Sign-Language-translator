@@ -58,14 +58,14 @@ class WordSuggester:
             "kerala",
             "mumbai",
             "chennai",
-
+            "have",
             "what",
             "where",
             "when",
             "why",
             "who",
             "how",
-
+            "are",
             "my",
             "your",
             "name",
@@ -74,7 +74,7 @@ class WordSuggester:
             "you",
             "i",
             "am",
-
+            "aman"
             "help",
             "want",
             "need",
