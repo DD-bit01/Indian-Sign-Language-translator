@@ -2,6 +2,9 @@
 
 > A computer-vision and machine-learning based prototype that recognizes Indian Sign Language (ISL) alphabet signs from a camera, builds words and sentences, and converts the generated text into speech.
 
+<img width="948" height="1072" alt="Screenshot 2026-09-19 043951" src="https://github.com/user-attachments/assets/0f286d25-cff2-4da0-a04e-2d913fb663a2" />
+
+
 ## Demo
 
 **Example:**  
