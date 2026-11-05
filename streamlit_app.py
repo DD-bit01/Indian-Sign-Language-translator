@@ -354,8 +354,19 @@ with col_nlp:
     # Speak Button
     if st.button("🔊 Speak Sentence", type="primary", use_container_width=True):
         if text_to_translate:
-            tts.speak(text_to_translate, lang=selected_lang)
-            st.success(f"Speaking in {selected_lang.upper()}: '{text_to_translate}'")
+            try:
+                import io
+                from gtts import gTTS
+                spoken_text = hi_trans if selected_lang == "hi" else (te_trans if selected_lang == "te" else text_to_translate)
+                fp = io.BytesIO()
+                g = gTTS(text=spoken_text or text_to_translate, lang=selected_lang, slow=False)
+                g.write_to_fp(fp)
+                fp.seek(0)
+                st.audio(fp.read(), format="audio/mp3", autoplay=True)
+                st.success(f"Speaking in {selected_lang.upper()}: '{spoken_text}'")
+            except Exception as e:
+                tts.speak(text_to_translate, lang=selected_lang)
+                st.info(f"Spoken: '{text_to_translate}'")
 
 
 # ============================================================
