@@ -3,9 +3,6 @@ data/
 webcam_data/
 webcam_data_normalized/
 
-# Generated data/model files
-
-
 # Python
 __pycache__/
 *.pyc
@@ -16,3 +13,6 @@ __pycache__/
 # Temporary files
 temp.py
 webcam_5.jpg
+cloudflared.exe
+*.pem
+*.key
