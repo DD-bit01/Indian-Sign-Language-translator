@@ -1,5 +1,5 @@
 streamlit>=1.35.0
-mediapipe==0.10.21
+mediapipe>=0.10.14
 protobuf<5,>=4.25.3
 torch
 scikit-learn
